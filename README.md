@@ -94,3 +94,30 @@ npm run db:import
 - 当前实现使用 `ILIKE` 做组合搜索，适合先快速上线。
 - 如果后续要做更快的全文检索，可以继续加 trigram 或全文索引。
 
+## 部署到 1Panel
+
+推荐方式是使用 1Panel 的“容器 -> 编排”导入本项目根目录中的 `docker-compose.yml`，只运行 `web` 服务，数据库使用 1Panel 已安装的 PostgreSQL。
+
+1. 将项目上传到服务器，例如 `/opt/1panel/apps/showukb`
+2. 按需修改 `.env.docker`
+   将 `DATABASE_URL` 改成 1Panel PostgreSQL 的实际连接串
+3. 在 1Panel 中进入“容器 -> 编排 -> 创建编排”
+4. 选择当前项目目录，导入 `docker-compose.yml`
+5. 启动编排
+6. 首次初始化数据：
+
+```bash
+docker exec -it showukb-web npm run db:init
+docker exec -it showukb-web npm run db:import
+```
+
+7. 在 1Panel 的“网站”中创建“反向代理”站点，代理到 `127.0.0.1:3000`
+
+`DATABASE_URL` 示例：
+
+```bash
+postgres://showukb:your_password@127.0.0.1:5432/showukb
+```
+
+如果你的 PostgreSQL 不在本机，或者 Compose 网络无法访问 `127.0.0.1`，请改成数据库实际可访问的内网地址。
+
