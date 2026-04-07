@@ -23,4 +23,3 @@ CREATE INDEX IF NOT EXISTS ukb_dictionary_title_idx ON ukb_dictionary (title);
 CREATE INDEX IF NOT EXISTS ukb_dictionary_entity_idx ON ukb_dictionary (entity);
 CREATE INDEX IF NOT EXISTS ukb_dictionary_type_idx ON ukb_dictionary (type);
 CREATE INDEX IF NOT EXISTS ukb_dictionary_folder_path_idx ON ukb_dictionary (folder_path);
-

@@ -7,10 +7,15 @@ services:
       dockerfile: Dockerfile
     container_name: showukb-web
     restart: unless-stopped
-    env_file:
-      - .env.docker
     environment:
-      DATABASE_URL: ${DATABASE_URL}
+      DB_PROVIDER: postgres
+      DATABASE_URL: postgresql://showukb:ECNQh2maQadcPPad@1Panel-postgresql-QwRz:5432/showukb
       PORT: 3000
     ports:
-      - "3000:3000"
+      - "10001:3000"
+    networks:
+      - 1panel-network
+
+networks:
+  1panel-network:
+    external: true
