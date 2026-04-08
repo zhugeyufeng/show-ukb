@@ -5,6 +5,11 @@ export const searchQuerySchema = z.object({
   entity: z.string().default(""),
   type: z.string().default(""),
   folder: z.string().default(""),
+  folderL1: z.string().default(""),
+  folderL2: z.string().default(""),
+  folderL3: z.string().default(""),
+  folderL4: z.string().default(""),
+  folderL5: z.string().default(""),
   page: z.coerce.number().int().min(1).default(1),
   pageSize: z.coerce.number().int().min(1).max(100).default(50)
 });

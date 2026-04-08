@@ -1,10 +1,8 @@
-version: "3.9"
-
 services:
   web:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ${APP_ROOT:-/opt/1panel/apps/showukb}
+      dockerfile: ${APP_ROOT:-/opt/1panel/apps/showukb}/Dockerfile
     container_name: showukb-web
     restart: unless-stopped
     environment:

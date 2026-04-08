@@ -1,4 +1,4 @@
-import { getPgPool } from "@/lib/db/client";
+﻿import { getPgPool } from "@/lib/db/client";
 import type { FacetItem, SearchQueryInput, SearchResult, UkbRow } from "@/lib/search/types";
 
 function normalizeWhere(input: SearchQueryInput) {
@@ -23,7 +23,13 @@ function normalizeWhere(input: SearchQueryInput) {
     params.push(input.type);
   }
 
-  if (input.folder) {
+  const folderLevels = [input.folderL1, input.folderL2, input.folderL3, input.folderL4, input.folderL5].filter(Boolean);
+
+  if (folderLevels.length > 0) {
+    const prefix = folderLevels.join(" > ");
+    clauses.push("folder_path ILIKE ?");
+    params.push(`${prefix}%`);
+  } else if (input.folder) {
     clauses.push("folder_path = ?");
     params.push(input.folder);
   }
@@ -68,6 +74,18 @@ export async function searchDictionary(input: SearchQueryInput): Promise<SearchR
   };
 }
 
+export async function exportFieldIds(input: SearchQueryInput): Promise<string[]> {
+  const pool = getPgPool();
+  const where = normalizeWhere(input);
+  const sql = toPgSql(
+    `SELECT DISTINCT name
+     FROM ukb_dictionary
+     ${where.where}
+     ORDER BY name ASC`
+  );
+  const res = await pool.query<{ name: string }>(sql, where.params);
+  return res.rows.map((row) => row.name).filter(Boolean);
+}
 export async function getFacetOptions() {
   const pool = getPgPool();
 
@@ -86,3 +104,4 @@ export async function getFacetOptions() {
 
   return { entities, types, folders };
 }
+

@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { env } from "@/lib/env";
-import { ukbDictionaryPg } from "@/lib/db/schema-pg";
+import { env } from "../env";
+import { ukbDictionaryPg } from "./schema-pg";
 
 function getSslConfig() {
   const mode = (env.PGSSL || env.DB_SSL || "").toLowerCase();

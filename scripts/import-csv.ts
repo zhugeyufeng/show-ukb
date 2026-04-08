@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse } from "csv-parse";
-import { env } from "@/lib/env";
-import { getPgPool } from "@/lib/db/client";
+import { env } from "../lib/env";
+import { getPgPool } from "../lib/db/client";
 
 const csvFile = env.CSV_FILE || "app1053989_20251123012801.dataset.data_dictionary.csv";
 const csvPath = path.join(process.cwd(), csvFile);

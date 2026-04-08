@@ -1,7 +1,7 @@
-import { Hono } from "hono";
+﻿import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { handle } from "hono/vercel";
-import { getFacetOptions, searchDictionary } from "@/lib/search/service";
+import { exportFieldIds, getFacetOptions, searchDictionary } from "@/lib/search/service";
 import { searchQuerySchema } from "@/lib/search/types";
 
 const app = new Hono().basePath("/api");
@@ -23,4 +23,17 @@ app.get(
   }
 );
 
+app.get(
+  "/export-field-ids",
+  zValidator("query", searchQuerySchema),
+  async (c) => {
+    const query = c.req.valid("query");
+    const fieldIds = await exportFieldIds(query);
+    const text = fieldIds.join(",");
+    c.header("Content-Type", "text/plain; charset=utf-8");
+    c.header("Content-Disposition", 'attachment; filename="field_ids.txt"');
+    return c.body(text);
+  }
+);
 export const GET = handle(app);
+

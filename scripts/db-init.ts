@@ -1,4 +1,4 @@
-import { getPgPool } from "@/lib/db/client";
+import { getPgPool } from "../lib/db/client";
 
 async function main() {
   const pool = getPgPool();
